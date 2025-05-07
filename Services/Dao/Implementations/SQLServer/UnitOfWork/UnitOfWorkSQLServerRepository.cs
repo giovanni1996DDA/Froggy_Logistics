@@ -14,13 +14,14 @@ namespace Services.Dao.Implementations.SQLServer.UnitOfWork
 {
     public class UnitOfWorkSQLServerRepository : IUnitOfWorkRepository
     {
-        public IUserDao UserRepository { get; private set; }
+        public IAppUserDao UserRepository { get; private set; }
         public IRolDao RolRepository { get; private set; }
         public IRolRolDao RolRolRepository { get; private set; }
         public IPermisoDao PermisoRepository { get; private set; }
         public IUserRolDao UserRolRepository { get; private set; }
         public IUserPermisoDao UserPermisoRepository { get; private set; }
         public IRolPermisoDao RolPermisoRepository { get; private set; }
+        public IDocTypeDao DocTypeRepository { get; private set; }
         public LoggerDao LoggerRepository { get; private set; }
 
         public UnitOfWorkSQLServerRepository(SqlConnection context, SqlTransaction transaction)

@@ -342,7 +342,7 @@ namespace Services.Logic
         /// <param name="user">Objeto de tipo Usuario.</param>
         /// <param name="acceso">Objeto de tipo Acceso.</param>
         /// <exception cref="ArgumentException">Si el tipo de acceso no es soportado.</exception>
-        public void CreateRelations(User user)
+        public void CreateRelations(AppUser user)
         {
             using (var context = FactoryDao.UnitOfWork.Create())
             {
@@ -396,12 +396,12 @@ namespace Services.Logic
         /// <param name="context">Contexto de la unidad de trabajo.</param>
         /// <param name="user">Objeto de tipo Usuario.</param>
         /// <param name="role">Objeto de tipo Rol.</param>
-        private void CreateRelation(IUnitOfWorkAdapter context, User user, Rol role)
+        private void CreateRelation(IUnitOfWorkAdapter context, AppUser user, Rol role)
         {
             UserRolRelation relation = new UserRolRelation()
             {
-                IdUser = user.Id,
-                IdRol = role.Id,
+                ID_User = user.ID_User,
+                ID_Rol = role.Id,
             };
 
             IUserRolDao repo = context.Repositories.UserRolRepository;
@@ -410,14 +410,14 @@ namespace Services.Logic
             {
                 new FilterProperty()
                 {
-                    Value = user.Id,
-                    PropertyName = "IdUser",
+                    Value = user.ID_User,
+                    PropertyName = "ID_User",
                     Operation = FilterOperation.Equals
                 },
                 new FilterProperty()
                 {
                     Value = role.Id,
-                    PropertyName = "IdRol",
+                    PropertyName = "ID_Rol",
                     Operation = FilterOperation.Equals
                 }
             };
@@ -433,12 +433,12 @@ namespace Services.Logic
         /// <param name="context">Contexto de la unidad de trabajo.</param>
         /// <param name="user">Objeto de tipo Usuario.</param>
         /// <param name="permiso">Objeto de tipo Permiso.</param>
-        private void CreateRelation(IUnitOfWorkAdapter context, User user, Permiso permiso)
+        private void CreateRelation(IUnitOfWorkAdapter context, AppUser user, Permiso permiso)
         {
             UserPermisoRelation relation = new UserPermisoRelation()
             {
-                IdUser = user.Id,
-                IdPermiso = permiso.Id
+                ID_User = user.ID_User,
+                ID_Permiso = permiso.Id
             };
 
             IUserPermisoDao repo = context.Repositories.UserPermisoRepository;
@@ -447,14 +447,14 @@ namespace Services.Logic
             {
                 new FilterProperty()
                 {
-                    Value = user.Id,
-                    PropertyName = "IdUser",
+                    Value = user.ID_User,
+                    PropertyName = "ID_User",
                     Operation = FilterOperation.Equals
                 },
                 new FilterProperty()
                 {
                     Value = permiso.Id,
-                    PropertyName = "IdPermiso",
+                    PropertyName = "ID_User",
                     Operation = FilterOperation.Equals
                 }
             };
@@ -474,8 +474,8 @@ namespace Services.Logic
         {
             RolRolRelation relation = new RolRolRelation()
             {
-                FatherId = rolPadre.Id,
-                ChildId = rolHijo.Id,
+                ID_Rol_Padre = rolPadre.Id,
+                ID_Rol_Hijo = rolHijo.Id,
             };
 
             IRolRolDao repo = context.Repositories.RolRolRepository;
@@ -485,13 +485,13 @@ namespace Services.Logic
                 new FilterProperty()
                 {
                     Value = rolPadre.Id,
-                    PropertyName = "FatherId",
+                    PropertyName = "ID_Rol_Padre",
                     Operation = FilterOperation.Equals
                 },
                 new FilterProperty()
                 {
                     Value = rolHijo.Id,
-                    PropertyName = "ChildId",
+                    PropertyName = "ID_Rol_Hijo",
                     Operation = FilterOperation.Equals
                 }
             };
@@ -511,8 +511,8 @@ namespace Services.Logic
         {
             RolPermisoRelation relation = new RolPermisoRelation()
             {
-                IdRol = rol.Id,
-                IdPermiso = permiso.Id,
+                ID_Rol = rol.Id,
+                ID_Permiso = permiso.Id,
             };
 
             IRolPermisoDao repo = context.Repositories.RolPermisoRepository;
@@ -522,13 +522,13 @@ namespace Services.Logic
                 new FilterProperty()
                 {
                     Value = rol.Id,
-                    PropertyName = "IdRol",
+                    PropertyName = "ID_Rol",
                     Operation = FilterOperation.Equals
                 },
                 new FilterProperty()
                 {
                     Value = permiso.Id,
-                    PropertyName = "IdPermiso",
+                    PropertyName = "ID_Permiso",
                     Operation = FilterOperation.Equals
                 }
             };
@@ -543,7 +543,7 @@ namespace Services.Logic
         /// </summary>
         /// <param name="user">Objeto de tipo Usuario.</param>
         /// <exception cref="NoRolesFoundForUserException">Si no se encuentran roles asociados al usuario.</exception>
-        public void GetAccesos(User user)
+        public void GetAccesos(AppUser user)
         {
             List<UserRolRelation> urRelation = null;
 
@@ -558,8 +558,8 @@ namespace Services.Logic
                     new FilterProperty()
                     {
                         Operation = FilterOperation.Equals,
-                        PropertyName = "IdUser",
-                        Value = user.Id
+                        PropertyName = "ID_User",
+                        Value = user.ID_User
                     }
                 };
 
@@ -574,7 +574,7 @@ namespace Services.Logic
                     IRolDao rolRepo = context.Repositories.RolRepository;
 
                     //Agrego el rol de cada relación
-                    user.Accesos.Add(rolRepo.GetOne(BuildFilters(new Rol() { Id = relation.IdRol })));
+                    user.Accesos.Add(rolRepo.GetOne(BuildFilters(new Rol() { Id = relation.ID_Rol })));
                 }
             }
 
@@ -593,8 +593,8 @@ namespace Services.Logic
                     new FilterProperty()
                     {
                         Operation = FilterOperation.Equals,
-                        PropertyName = "IdUser",
-                        Value = user.Id
+                        PropertyName = "ID_User",
+                        Value = user.ID_User
                     }
                 };
 
@@ -611,7 +611,7 @@ namespace Services.Logic
 
                 using (var context = FactoryDao.UnitOfWork.Create())
                 {
-                    fetchedPermiso = context.Repositories.PermisoRepository.GetOne(BuildFilters(new Permiso() { Id = relation.IdPermiso }));
+                    fetchedPermiso = context.Repositories.PermisoRepository.GetOne(BuildFilters(new Permiso() { Id = relation.ID_Permiso }));
                 }
 
                 if (fetchedPermiso == null) throw new DatabaseInconsistencyException();
@@ -640,7 +640,7 @@ namespace Services.Logic
                     new FilterProperty()
                     {
                         Value = rol.Id,
-                        PropertyName = "FatherId",
+                        PropertyName = "ID_Rol_Padre",
                         Operation = FilterOperation.Equals
                     },
                 };
@@ -655,7 +655,7 @@ namespace Services.Logic
 
                 using (var context = FactoryDao.UnitOfWork.Create())
                 {
-                    fetchedRol = context.Repositories.RolRepository.GetOne(BuildFilters(new Rol() { Id = relation.ChildId }));
+                    fetchedRol = context.Repositories.RolRepository.GetOne(BuildFilters(new Rol() { Id = relation.ID_Rol_Hijo }));
                 }
 
                 if (fetchedRol == null) throw new DatabaseInconsistencyException();
@@ -675,7 +675,7 @@ namespace Services.Logic
                     new FilterProperty()
                     {
                         Value = rol.Id,
-                        PropertyName = "IdRol",
+                        PropertyName = "ID_Rol",
                         Operation = FilterOperation.Equals
                     },
                 };
@@ -695,14 +695,14 @@ namespace Services.Logic
                     {
                         new FilterProperty()
                         {
-                            Value = relation.IdPermiso,
+                            Value = relation.ID_Permiso,
                             PropertyName = "Id",
                             Operation = FilterOperation.Equals
                         },
                     };
 
                     Permiso protoPermiso = context.Repositories.PermisoRepository
-                                            .GetOne(BuildFilters(new Permiso() { Id = relation.IdPermiso }));
+                                            .GetOne(BuildFilters(new Permiso() { Id = relation.ID_Permiso }));
 
                     if (protoPermiso == null) throw new DatabaseInconsistencyException();
 
@@ -779,7 +779,7 @@ namespace Services.Logic
             return returningPermiso;
         }
 
-        public List<Permiso> GetAllPermisosFromUser(User usr)
+        public List<Permiso> GetAllPermisosFromUser(AppUser usr)
         {
             List<Permiso> returning = new List<Permiso>();
 
@@ -809,12 +809,12 @@ namespace Services.Logic
         {
             rolPadre.Remove(permisoHijo);
         }
-        public void ClearRelations(User user)
+        public void ClearRelations(AppUser user)
         {
             ClearRoleRelations(user);
             ClearPermisoRelations(user);
         }
-        private void ClearRoleRelations(User user)
+        private void ClearRoleRelations(AppUser user)
         {
             using (var context = FactoryDao.UnitOfWork.Create())
             {
@@ -825,8 +825,8 @@ namespace Services.Logic
                     new FilterProperty()
                     {
                         Operation = FilterOperation.Equals,
-                        PropertyName = "IdUser",
-                        Value = user.Id
+                        PropertyName = "ID_User",
+                        Value = user.ID_User
                     }
                 };
 
@@ -835,7 +835,7 @@ namespace Services.Logic
                 context.SaveChanges();
             }
         }
-        private void ClearPermisoRelations(User user)
+        private void ClearPermisoRelations(AppUser user)
         {
             using (var context = FactoryDao.UnitOfWork.Create())
             {
@@ -846,8 +846,8 @@ namespace Services.Logic
                     new FilterProperty()
                     {
                         Operation = FilterOperation.Equals,
-                        PropertyName = "IdUser",
-                        Value = user.Id
+                        PropertyName = "ID_User",
+                        Value = user.ID_User
                     }
                 };
 
@@ -896,7 +896,7 @@ namespace Services.Logic
                 new FilterProperty()
                 {
                     Value = rol.Id,
-                    PropertyName = "FatherId",
+                    PropertyName = "ID_Rol_Padre",
                     Operation = FilterOperation.Equals
                 },
             };
@@ -910,7 +910,7 @@ namespace Services.Logic
                 new FilterProperty()
                 {
                     Value = rol.Id,
-                    PropertyName = "IdRol",
+                    PropertyName = "ID_Rol",
                     Operation = FilterOperation.Equals
                 },
             };
@@ -926,7 +926,7 @@ namespace Services.Logic
                 new FilterProperty()
                 {
                     Value = rol.Id,
-                    PropertyName = "ChildId",
+                    PropertyName = "ID_Rol_Hijo",
                     Operation = FilterOperation.Equals
                 },
             };
@@ -943,7 +943,7 @@ namespace Services.Logic
                 new FilterProperty()
                 {
                     Value = permiso.Id,
-                    PropertyName = "IdPermiso",
+                    PropertyName = "ID_Permiso",
                     Operation = FilterOperation.Equals
                 },
             };

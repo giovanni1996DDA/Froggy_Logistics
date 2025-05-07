@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace Services.Domain
 {
-    public class UserPermisoRelation
+    public class DocType
     {
         [Key]
-        public Guid? ID_User { get; set; }
-        [Key]
-        public Guid? ID_Permiso { get; set; }
+        public int ID_DocType { get; set; }
+        public string Nombre { get; set; }
     }
 }

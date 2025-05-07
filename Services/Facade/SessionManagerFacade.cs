@@ -10,7 +10,7 @@ namespace Services.Facade
 {
     public static class SessionManagerFacade
     {
-        public static User GetLoggedUser()
+        public static AppUser GetLoggedUser()
         {
             return SessionManager.GetCurrentUser();
         }

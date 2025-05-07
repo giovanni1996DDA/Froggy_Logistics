@@ -9,13 +9,14 @@ namespace Services.Dao.Interfaces.UnitOfWork
 {
     public interface IUnitOfWorkRepository
     {
-        IUserDao UserRepository { get; }
+        IAppUserDao UserRepository { get; }
         IRolDao RolRepository { get; }
         IRolRolDao RolRolRepository { get; }
         IPermisoDao PermisoRepository { get; }
         IUserRolDao UserRolRepository { get; }
         IUserPermisoDao UserPermisoRepository { get; }
         IRolPermisoDao RolPermisoRepository { get; }
+        IDocTypeDao DocTypeRepository { get; }
         LoggerDao LoggerRepository { get; }
     }
 }

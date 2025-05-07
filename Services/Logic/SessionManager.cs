@@ -9,14 +9,14 @@ namespace Services.Logic
 {
     public static class SessionManager
     {
-        private static User currentUser;
+        private static AppUser currentUser;
 
-        public static void SetUser(User user)
+        public static void SetUser(AppUser user)
         {
             currentUser = user;
         }
 
-        public static User GetCurrentUser()
+        public static AppUser GetCurrentUser()
         {
             return currentUser;
         }

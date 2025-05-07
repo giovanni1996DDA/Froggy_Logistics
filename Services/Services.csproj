@@ -161,9 +161,17 @@
     <Compile Include="Dao\Factory\FactoryDao.cs" />
     <Compile Include="Dao\Implementations\Generics\LanguageDao.cs" />
     <Compile Include="Dao\Implementations\SQLServer\DataBaseDao.cs" />
+    <Compile Include="Dao\Implementations\SQLServer\DocTypeDao.cs" />
+    <Compile Include="Dao\Interfaces\IDocTypeDao.cs" />
     <Compile Include="Domain\BackupFile.cs" />
+    <Compile Include="Domain\DocType.cs" />
     <Compile Include="Domain\LanguageItem.cs" />
     <Compile Include="Facade\DataBaseFacade.cs" />
+    <Compile Include="FroggyLogisticsDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FroggyLogisticsDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Logic\DataBaseService.cs" />
     <Compile Include="Logic\Exceptions\WordNotFoundException.cs" />
     <Compile Include="Dao\Implementations\SQLServer\FilterProperty.cs" />
@@ -186,14 +194,14 @@
     <Compile Include="Dao\Implementations\SQLServer\UnitOfWork\UnitOfWorkSQLServerRepository.cs" />
     <Compile Include="Dao\Implementations\SQLServer\UserPermisoDao.cs" />
     <Compile Include="Dao\Implementations\SQLServer\UserRolDao.cs" />
-    <Compile Include="Dao\Implementations\SQLServer\UserDao.cs" />
+    <Compile Include="Dao\Implementations\SQLServer\AppUserDao.cs" />
     <Compile Include="Dao\Interfaces\IGenericDao.cs" />
     <Compile Include="Dao\Interfaces\IRolPermisoDao.cs" />
     <Compile Include="Dao\Interfaces\IRolRolDao.cs" />
     <Compile Include="Dao\Interfaces\IUserPermisoDao.cs" />
     <Compile Include="Dao\Interfaces\IPermisoDao.cs" />
     <Compile Include="Dao\Interfaces\IRolDao.cs" />
-    <Compile Include="Dao\Interfaces\IUserDao.cs" />
+    <Compile Include="Dao\Interfaces\IAppUserDao.cs" />
     <Compile Include="Dao\Interfaces\IUserRolDao.cs" />
     <Compile Include="Dao\Interfaces\UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="Dao\Interfaces\UnitOfWork\IUnitOfWorkAdapter .cs" />
@@ -204,7 +212,7 @@
     <Compile Include="Domain\Permiso.cs" />
     <Compile Include="Domain\RolPermisoRelation.cs" />
     <Compile Include="Domain\RolRolRelation.cs" />
-    <Compile Include="Domain\User.cs" />
+    <Compile Include="Domain\AppUser.cs" />
     <Compile Include="Domain\UserPermisoRelation.cs" />
     <Compile Include="Domain\UserRolRelation.cs" />
     <Compile Include="Facade\AccesoFacade.cs" />
@@ -213,7 +221,7 @@
     <Compile Include="Facade\LoggerFacade.cs" />
     <Compile Include="Facade\SecurityManagerFacade.cs" />
     <Compile Include="Facade\SessionManagerFacade.cs" />
-    <Compile Include="Facade\UserFacade.cs" />
+    <Compile Include="Facade\AppUserFacade.cs" />
     <Compile Include="Helpers\Unsuscriber.cs" />
     <Compile Include="Logic\AccesoService.cs" />
     <Compile Include="Logic\Exceptions\DatabaseInconsistencyException.cs" />
@@ -237,12 +245,22 @@
     <Compile Include="Logic\Logic.cs" />
     <Compile Include="Logic\SecurityManagerService.cs" />
     <Compile Include="Logic\SessionManager.cs" />
-    <Compile Include="Logic\UserService.cs" />
+    <Compile Include="Logic\AppUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ServicesDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ServicesDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ServicesDataSetV2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ServicesDataSetV2.xsd</DependentUpon>
     </Compile>
     <Compile Include="TestDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -252,10 +270,43 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="FroggyLogisticsDataSet.xsc">
+      <DependentUpon>FroggyLogisticsDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="FroggyLogisticsDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>FroggyLogisticsDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="FroggyLogisticsDataSet.xss">
+      <DependentUpon>FroggyLogisticsDataSet.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="ServicesDataSet.xsc">
+      <DependentUpon>ServicesDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="ServicesDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ServicesDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ServicesDataSet.xss">
+      <DependentUpon>ServicesDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="ServicesDataSetV2.xsc">
+      <DependentUpon>ServicesDataSetV2.xsd</DependentUpon>
+    </None>
+    <None Include="ServicesDataSetV2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ServicesDataSetV2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ServicesDataSetV2.xss">
+      <DependentUpon>ServicesDataSetV2.xsd</DependentUpon>
     </None>
     <None Include="TestDataSet.xsc">
       <DependentUpon>TestDataSet.xsd</DependentUpon>

@@ -21,18 +21,18 @@ namespace Services.Logic
     /// Servicio para gestionar usuarios en el sistema.
     /// Proporciona funcionalidad para registrar, actualizar, validar y obtener usuarios.
     /// </summary>
-    public class UserService : Logic<User>, IObservable<User>
+    public class AppUserService : Logic<AppUser>, IObservable<AppUser>
     {
         #region Singleton
         /// <summary>
         /// Instancia única de la clase UserService (patrón Singleton).
         /// </summary>
-        private static readonly UserService instance = new UserService();
+        private static readonly AppUserService instance = new AppUserService();
 
         /// <summary>
         /// Obtiene la instancia única del servicio de usuarios.
         /// </summary>
-        public static UserService Instance
+        public static AppUserService Instance
         {
             get
             {
@@ -43,10 +43,10 @@ namespace Services.Logic
         /// <summary>
         /// Constructor privado para implementar el patrón Singleton.
         /// </summary>
-        private UserService() { }
+        private AppUserService() { }
         #endregion
 
-        List<IObserver<User>> observers = new List<IObserver<User>>();
+        List<IObserver<AppUser>> observers = new List<IObserver<AppUser>>();
 
         /// <summary>
         /// Registra un usuario en la base de datos.
@@ -54,7 +54,7 @@ namespace Services.Logic
         /// <param name="user">El objeto usuario a registrar.</param>
         /// <exception cref="InvalidUserException">Si los datos del usuario no son válidos.</exception>
         /// <exception cref="UserAlreadyRegisteredException">Si el nombre de usuario ya está registrado.</exception>
-        public void RegisterUser(User user)
+        public void RegisterUser(AppUser user)
         {
             List<ValidationResult> results = new List<ValidationResult>();
 
@@ -65,12 +65,12 @@ namespace Services.Logic
 
             using (var context = FactoryDao.UnitOfWork.Create())
             {
-                IUserDao userRepo = context.Repositories.UserRepository;
+                IAppUserDao userRepo = context.Repositories.UserRepository;
 
-                User validatingUser = new User()
+                AppUser validatingUser = new AppUser()
                 {
-                    UserName = user.UserName,
-                    Password = user.Password,
+                    Username = user.Username,
+                    //Password = user.Password,
                 };
 
                 List<FilterProperty> filters = BuildFilters(validatingUser);
@@ -82,9 +82,9 @@ namespace Services.Logic
 
             using (var context = FactoryDao.UnitOfWork.Create())
             {
-                IUserDao userRepo = context.Repositories.UserRepository;
+                IAppUserDao userRepo = context.Repositories.UserRepository;
 
-                user.Id = userId;
+                user.ID_User = userId;
 
                 userRepo.Create(user);
 
@@ -95,7 +95,7 @@ namespace Services.Logic
 
             AccesoService.Instance.CreateRelations(user);
         }
-        public void Login(User user) 
+        public void Login(AppUser user) 
         {
             try
             {
@@ -115,13 +115,13 @@ namespace Services.Logic
         /// <param name="user">Objeto usuario con los criterios de búsqueda.</param>
         /// <returns>Lista de usuarios que coinciden con los criterios.</returns>
         /// <exception cref="NoUsersFoundException">Si no se encuentran usuarios que coincidan con los criterios.</exception>
-        public List<User> Get(User user)
+        public List<AppUser> Get(AppUser user)
         {
-            List<User> returningUsers = new List<User>();
+            List<AppUser> returningUsers = new List<AppUser>();
 
             using (var context = FactoryDao.UnitOfWork.Create())
             {
-                IUserDao userRepo = context.Repositories.UserRepository;
+                IAppUserDao userRepo = context.Repositories.UserRepository;
 
                 List<FilterProperty> filters = BuildFilters(user);
 
@@ -131,7 +131,7 @@ namespace Services.Logic
             if (returningUsers.Count == 0)
                 throw new NoUsersFoundException();
 
-            foreach (User returningUser in returningUsers)
+            foreach (AppUser returningUser in returningUsers)
             {
                 try
                 {
@@ -145,13 +145,11 @@ namespace Services.Logic
                 }
             }
 
-            //Acá deberia llenar especialidades, pero no me deja llamar a EspecialidadService por referencia circular.
-
             return returningUsers;
         }
-        public void Delete(User user)
+        public void Delete(AppUser user)
         {
-            user.IsAnulated = true;
+            //user.IsAnulated = true;
 
             try
             {
@@ -163,11 +161,11 @@ namespace Services.Logic
                 throw;
             }
         }
-        public User GetOne(User user)
+        public AppUser GetOne(AppUser user)
         {
             try
             {
-                User returning = Get(user).FirstOrDefault();
+                AppUser returning = Get(user).FirstOrDefault();
                 return returning;
             }
             catch (NoUsersFoundException)
@@ -184,7 +182,7 @@ namespace Services.Logic
         /// </summary>
         /// <param name="user">El objeto usuario a actualizar.</param>
         /// <exception cref="UserDoesNotExistException">Si el usuario no existe en la base de datos.</exception>
-        public void UpdateUser(User user)
+        public void UpdateUser(AppUser user)
         {
             List<ValidationResult> results = new List<ValidationResult>();
 
@@ -193,7 +191,7 @@ namespace Services.Logic
 
             using (var context = FactoryDao.UnitOfWork.Create())
             {
-                IUserDao userRepo = context.Repositories.UserRepository;
+                IAppUserDao userRepo = context.Repositories.UserRepository;
 
                 List<FilterProperty> filters = BuildFilters(user);
 
@@ -286,13 +284,13 @@ namespace Services.Logic
         /// <param name="usr">El objeto usuario a validar.</param>
         /// <param name="results">Lista de resultados de validación.</param>
         /// <returns>True si el usuario es válido, de lo contrario, false.</returns>
-        private bool isValid(User usr, List<ValidationResult> results)
+        private bool isValid(AppUser usr, List<ValidationResult> results)
         {
             var valContext = new ValidationContext(usr, serviceProvider: null, items: null);
             return Validator.TryValidateObject(usr, valContext, results, true);
         }
 
-        public IDisposable Subscribe(IObserver<User> observer)
+        public IDisposable Subscribe(IObserver<AppUser> observer)
         {
             observers.Add(observer);
 

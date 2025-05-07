@@ -11,10 +11,7 @@ namespace Services.Domain
     /// Representa una familia de permisos
     /// </summary>
     public class Rol : Acceso
-    {
-        public string Descripcion { get; set; }
-
-        
+    {        
         private List<Acceso> _Accesos = new List<Acceso>();
 
         public override bool HasChildren { 

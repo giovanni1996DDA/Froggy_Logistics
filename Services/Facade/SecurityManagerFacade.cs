@@ -10,7 +10,7 @@ namespace Services.Facade
 {
     public class SecurityManagerFacade
     {
-        public bool RequestForPermission(User user, Acceso acceso)
+        public bool RequestForPermission(AppUser user, Acceso acceso)
         {
             return SecurityManagerService.Instance.HasAccess(user, acceso);
         }

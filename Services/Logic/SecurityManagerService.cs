@@ -22,9 +22,9 @@ namespace Services.Logic
         private SecurityManagerService() { }
         #endregion
 
-        public bool HasAccess(User user, Acceso requestedAcceso)
+        public bool HasAccess(AppUser user, Acceso requestedAcceso)
         {
-            return UserService.Instance.GetPermisos(user.Accesos).Any(acceso => acceso.Id == requestedAcceso.Id);
+            return AppUserService.Instance.GetPermisos(user.Accesos).Any(acceso => acceso.Id == requestedAcceso.Id);
         }
     }
 }

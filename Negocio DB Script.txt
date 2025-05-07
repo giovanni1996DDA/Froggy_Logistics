@@ -1,0 +1,220 @@
+
+CREATE DATABASE FroggyLogistics;
+GO
+USE FroggyLogistics;
+GO
+
+-- Tabla: UnidadMedida
+CREATE TABLE UnidadMedida (
+    ID_Unidad UNIQUEIDENTIFIER PRIMARY KEY,
+    Codigo_Unidad INT IDENTITY(1,1) UNIQUE,
+    Descripcion NVARCHAR(50) NOT NULL,
+    Notacion_Unidad VARCHAR(30) NOT NULL
+);
+
+-- Tabla: Materiales
+CREATE TABLE Materiales (
+    ID_Material UNIQUEIDENTIFIER PRIMARY KEY,
+    Codigo_Material INT IDENTITY(1,1) UNIQUE,
+    Descripcion NVARCHAR(100) NOT NULL,
+    Unidad_Base UNIQUEIDENTIFIER NOT NULL,
+    Tipo_Material VARCHAR(50),
+    Stock_Minimo INT,
+    Activo BIT DEFAULT 1,
+    FOREIGN KEY (Unidad_Base) REFERENCES UnidadMedida(ID_Unidad)
+);
+
+-- Tabla: Proveedores
+CREATE TABLE Proveedores (
+    ID_Proveedor UNIQUEIDENTIFIER PRIMARY KEY,
+    Codigo_Proveedor INT IDENTITY(1,1) UNIQUE,
+    Razon_Social NVARCHAR(100),
+    CUIT VARCHAR(20),
+    Email NVARCHAR(100),
+    Telefono VARCHAR(20),
+    Direccion NVARCHAR(150),
+    Activo BIT DEFAULT 1
+);
+
+-- Tabla: Almacenes
+CREATE TABLE Almacenes (
+    ID_Almacen UNIQUEIDENTIFIER PRIMARY KEY,
+    Codigo_Almacen INT IDENTITY(1,1) UNIQUE,
+    Nombre NVARCHAR(50),
+    Ubicacion NVARCHAR(100),
+    Responsable UNIQUEIDENTIFIER
+);
+
+-- Tabla: CondicionesPago
+CREATE TABLE CondicionesPago (
+    ID_CondicionPago INT PRIMARY KEY,
+    Nombre NVARCHAR(50),
+    Descripcion NVARCHAR(200)
+);
+
+-- Tabla: ListasPrecio
+CREATE TABLE ListasPrecio (
+    ID_ListaPrecio UNIQUEIDENTIFIER PRIMARY KEY,
+    Codigo_ListaPrecio INT IDENTITY(1,1) UNIQUE,
+    Nombre NVARCHAR(100),
+    Fecha_Desde DATE,
+    Fecha_Hasta DATE,
+    Observaciones NVARCHAR(200)
+);
+
+-- Tabla: PreciosMaterial
+CREATE TABLE PreciosMaterial (
+    ID_ListaPrecio UNIQUEIDENTIFIER,
+    ID_Material UNIQUEIDENTIFIER,
+    Precio DECIMAL(18,2),
+    Fecha_Creacion DATETIME,
+    Usuario_Creador UNIQUEIDENTIFIER,
+    PRIMARY KEY (ID_ListaPrecio, ID_Material),
+    FOREIGN KEY (ID_ListaPrecio) REFERENCES ListasPrecio(ID_ListaPrecio),
+    FOREIGN KEY (ID_Material) REFERENCES Materiales(ID_Material)
+);
+
+-- Tabla: SolPed
+CREATE TABLE SolPed (
+    ID_SolPed UNIQUEIDENTIFIER PRIMARY KEY,
+    Codigo_SolPed INT IDENTITY(1,1) UNIQUE,
+    ID_Usuario_Solicitante UNIQUEIDENTIFIER,
+    Fecha_Creacion DATETIME,
+    Fecha_Modificacion DATETIME,
+    ID_Usuario_Creacion UNIQUEIDENTIFIER,
+    ID_Usuario_Modificacion UNIQUEIDENTIFIER,
+    Observaciones NVARCHAR(500)
+);
+
+-- Tabla: PosicionesSolPed
+CREATE TABLE PosicionesSolPed (
+    ID_SolPed UNIQUEIDENTIFIER,
+    ID_PosicionSolPed INT,
+    Fecha_Creacion DATETIME,
+    Fecha_Modificacion DATETIME,
+    ID_Usuario_Creacion UNIQUEIDENTIFIER,
+    ID_Usuario_Modificacion UNIQUEIDENTIFIER,
+    ID_Material UNIQUEIDENTIFIER,
+    Cantidad INT,
+    Unidad VARCHAR(10),
+    Precio_Estimado DECIMAL(18,2),
+    ID_Proveedor_Sugerido UNIQUEIDENTIFIER,
+    ID_Almacen UNIQUEIDENTIFIER,
+    ID_Estado UNIQUEIDENTIFIER,
+    PRIMARY KEY (ID_SolPed, ID_PosicionSolPed),
+    FOREIGN KEY (ID_SolPed) REFERENCES SolPed(ID_SolPed),
+    FOREIGN KEY (ID_Material) REFERENCES Materiales(ID_Material),
+    FOREIGN KEY (ID_Almacen) REFERENCES Almacenes(ID_Almacen)
+);
+
+-- Tabla: OrdenesCompra
+CREATE TABLE OrdenesCompra (
+    ID_OC UNIQUEIDENTIFIER PRIMARY KEY,
+    Codigo_OC INT IDENTITY(1,1) UNIQUE,
+    Fecha_Creacion DATETIME,
+    Fecha_Modificacion DATETIME,
+    ID_Usuario_Creacion UNIQUEIDENTIFIER,
+    ID_Usuario_Modificacion UNIQUEIDENTIFIER,
+    ID_Usuario_Comprador UNIQUEIDENTIFIER,
+    ID_Estado UNIQUEIDENTIFIER
+);
+
+-- Tabla: PosicionesOC
+CREATE TABLE PosicionesOC (
+    ID_PosicionOC INT PRIMARY KEY,
+    ID_OC UNIQUEIDENTIFIER,
+    Fecha_Creacion DATETIME,
+    Fecha_Modificacion DATETIME,
+    ID_Usuario_Creacion UNIQUEIDENTIFIER,
+    ID_Usuario_Modificacion UNIQUEIDENTIFIER,
+    ID_Proveedor UNIQUEIDENTIFIER,
+    ID_Material UNIQUEIDENTIFIER,
+    Cantidad INT,
+    Unidad VARCHAR(10),
+    Precio_Final DECIMAL(18,2),
+    ID_CondicionPago INT,
+    ID_SolPed UNIQUEIDENTIFIER,
+    ID_PosicionSolPed INT,
+    ID_Estado UNIQUEIDENTIFIER,
+    FOREIGN KEY (ID_OC) REFERENCES OrdenesCompra(ID_OC),
+    FOREIGN KEY (ID_Proveedor) REFERENCES Proveedores(ID_Proveedor),
+    FOREIGN KEY (ID_Material) REFERENCES Materiales(ID_Material),
+    FOREIGN KEY (ID_CondicionPago) REFERENCES CondicionesPago(ID_CondicionPago)
+);
+
+-- Tabla: Recepciones
+CREATE TABLE Recepciones (
+    ID_Recepcion UNIQUEIDENTIFIER PRIMARY KEY,
+    Codigo_Recepcion INT IDENTITY(1,1) UNIQUE,
+    Fecha_Recepcion DATETIME,
+    Usuario_Recepcion UNIQUEIDENTIFIER,
+    Observaciones NVARCHAR(200)
+);
+
+-- Tabla: PosicionesRecepcion
+CREATE TABLE PosicionesRecepcion (
+    ID_PosicionRecepcion INT PRIMARY KEY,
+    ID_Recepcion UNIQUEIDENTIFIER,
+    ID_PosicionOC INT,
+    Cantidad_Recibida INT,
+    Imagen_Remito VARBINARY(MAX),
+    FOREIGN KEY (ID_Recepcion) REFERENCES Recepciones(ID_Recepcion),
+    FOREIGN KEY (ID_PosicionOC) REFERENCES PosicionesOC(ID_PosicionOC)
+);
+
+-- Tabla: Stock
+CREATE TABLE Stock (
+    ID_Almacen UNIQUEIDENTIFIER,
+    ID_Material UNIQUEIDENTIFIER,
+    Cantidad_Disponible INT,
+    PRIMARY KEY (ID_Almacen, ID_Material)
+);
+
+-- Tabla: MovimientosStock
+CREATE TABLE MovimientosStock (
+    ID_Movimiento UNIQUEIDENTIFIER PRIMARY KEY,
+    Codigo_Movimiento INT IDENTITY(1,1) UNIQUE,
+    Fecha DATETIME,
+    Tipo_Movimiento VARCHAR(20),
+    ID_Material UNIQUEIDENTIFIER,
+    ID_Almacen UNIQUEIDENTIFIER,
+    Cantidad INT,
+    Motivo NVARCHAR(100),
+    Usuario UNIQUEIDENTIFIER,
+    Observaciones NVARCHAR(200)
+);
+
+-- Tabla: TiposEntidad
+CREATE TABLE TiposEntidad (
+    ID_Tipo_Entidad INT PRIMARY KEY,
+    Nombre VARCHAR(20),
+    Descripcion NVARCHAR(100)
+);
+
+-- Tabla: TiposArchivoAdjunto
+CREATE TABLE TiposArchivoAdjunto (
+    ID_Tipo_Archivo INT PRIMARY KEY,
+    Nombre VARCHAR(20),
+    Descripcion NVARCHAR(100)
+);
+
+-- Tabla: Adjuntos
+CREATE TABLE Adjuntos (
+    ID_Adjunto UNIQUEIDENTIFIER PRIMARY KEY,
+    ID_Tipo_Entidad INT,
+    ID_Entidad UNIQUEIDENTIFIER,
+    ID_Tipo_Archivo INT,
+    Nombre_Archivo NVARCHAR(100),
+    Archivo VARBINARY(MAX),
+    Fecha_Subida DATETIME,
+    Usuario_Subida UNIQUEIDENTIFIER
+);
+
+-- Tabla: EstadosEntidades
+CREATE TABLE EstadosEntidades (
+    ID_Estado UNIQUEIDENTIFIER PRIMARY KEY,
+    Nombre VARCHAR(30),
+    Descripcion NVARCHAR(100),
+    ID_Tipo_Entidad INT
+);
+

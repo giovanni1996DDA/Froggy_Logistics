@@ -9,10 +9,10 @@ namespace Services.Helpers
 {
     public class Unsubscriber : IDisposable
     {
-        private List<IObserver<User>> _observers;
-        private IObserver<User> _observer;
+        private List<IObserver<AppUser>> _observers;
+        private IObserver<AppUser> _observer;
 
-        public Unsubscriber(List<IObserver<User>> observers, IObserver<User> observer)
+        public Unsubscriber(List<IObserver<AppUser>> observers, IObserver<AppUser> observer)
         {
             _observers = observers;
             _observer = observer;

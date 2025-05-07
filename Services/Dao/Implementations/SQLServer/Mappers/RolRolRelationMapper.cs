@@ -21,8 +21,8 @@ namespace Services.Dao.Implementations.SQLServer.Mappers
         {
             return new RolRolRelation()
             {
-                FatherId = Guid.Parse($"{values[(int)RolRolColumns.FatherId]}"),
-                ChildId = Guid.Parse($"{values[(int)RolRolColumns.ChildId]}"),
+                ID_Rol_Padre = Guid.Parse($"{values[(int)RolRolColumns.FatherId]}"),
+                ID_Rol_Hijo = Guid.Parse($"{values[(int)RolRolColumns.ChildId]}"),
             };
         }
     }

@@ -60,7 +60,7 @@ namespace Services.Facade
         {
             return AccesoService.Instance.Exists(permiso);
         }
-        public static List<Permiso> GetPermisosFromUser(User user)
+        public static List<Permiso> GetPermisosFromUser(AppUser user)
         {
             return AccesoService.Instance.GetAllPermisosFromUser(user);
         }

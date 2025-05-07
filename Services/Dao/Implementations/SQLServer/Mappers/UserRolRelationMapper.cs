@@ -21,8 +21,8 @@ namespace Services.Dao.Implementations.SQLServer.Mappers
         {
             return new UserRolRelation()
             {
-                IdUser = Guid.Parse($"{values[(int)UserRolColumns.IdUser]}"),
-                IdRol = Guid.Parse($"{values[(int)UserRolColumns.IdRol]}"),
+                ID_User = Guid.Parse($"{values[(int)UserRolColumns.IdUser]}"),
+                ID_Rol = Guid.Parse($"{values[(int)UserRolColumns.IdRol]}"),
             };
         }
     }

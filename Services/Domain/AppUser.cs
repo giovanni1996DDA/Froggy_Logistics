@@ -8,37 +8,34 @@ using System.Threading.Tasks;
 
 namespace Services.Domain
 {
-    public class User
+    public class AppUser
     {
         [Key]
-        public Guid? Id { get; set; }
+        public Guid? ID_User { get; set; }
+        [Key]
+        public int Legajo { get; set; }
         [Required
             (ErrorMessage = "El usuario es obligatorio.")]
         [Key]
-        public string UserName { get; set; }
+        public string Username { get; set; }
         [Required
             (ErrorMessage = "La contraseña es obligatoria.")]
         [RegularExpression
             (@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$",
             ErrorMessage = "La contraseña debe tener al menos una mayúscula, una minúscula, un número, un símbolo y al menos 8 caracteres.")]
         public string Password { get; set; }
+        [Required (ErrorMessage = "Se debe especificar un email.")]
+        public string Email { get; set; }
         [Required
             (ErrorMessage = "Se debe especificar un nombre.")]
         public string Nombre { get; set; }
         [Required
             (ErrorMessage = "Se debe especificar un apellido.")]
         public string Apellido { get; set; }
-        [Required
-            (ErrorMessage = "Se debe especificar un email.")]
-        public string Email { get; set; }
-        [NotMapped] // Hay que sacarlo.
-        public bool IsAnulated { get; set; }
-        [NotMapped] // Hay que sacarlo.
-        public bool PasswordResetted { get; set; }
-
+        public bool Estado { get; set; }
         [NotMapped]
         public List<Acceso> Accesos { get; set; } = new List<Acceso>();
-        public User()
+        public AppUser()
         {
             //Id = Guid.NewGuid();
         }

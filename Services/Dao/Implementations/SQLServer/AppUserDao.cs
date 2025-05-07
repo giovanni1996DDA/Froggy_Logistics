@@ -15,9 +15,9 @@ using System.Threading.Tasks;
 
 namespace Services.Dao.Implementations.SQLServer
 {
-    internal class UserDao : SqlTransactRepository<User>, IUserDao 
+    internal class AppUserDao : SqlTransactRepository<AppUser>, IAppUserDao 
     {
-        public UserDao(SqlConnection context, SqlTransaction _transaction) : base(context, _transaction)
+        public AppUserDao(SqlConnection context, SqlTransaction _transaction) : base(context, _transaction)
         {
         }
     }

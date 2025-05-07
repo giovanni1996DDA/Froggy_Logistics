@@ -23,7 +23,6 @@ namespace Services.Dao.Implementations.SQLServer.Mappers
             {
                 Id = Guid.Parse($"{values[(int)PermisoColumns.Id]}"),
                 Nombre = (string)values[(int)PermisoColumns.Nombre],
-                Modulo = (int)values[(int)PermisoColumns.Modulo],
                 TipoPermiso = (int)values[(int)PermisoColumns.TipoPermiso]
             };
         }

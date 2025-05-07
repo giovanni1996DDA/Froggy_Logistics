@@ -10,8 +10,8 @@ namespace Services.Domain
     public class RolRolRelation
     {
         [Key]
-        public Guid? FatherId { get; set; }
+        public Guid? ID_Rol_Padre { get; set; }
         [Key]
-        public Guid? ChildId { get; set; }
+        public Guid? ID_Rol_Hijo { get; set; }
     }
 }

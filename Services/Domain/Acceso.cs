@@ -16,10 +16,11 @@ namespace Services.Domain
     {
         [Key, Column(Order = 0)] // Primera columna en la clave primaria compuesta
         public Guid? Id { get; set; }
+        public int Codigo { get; set; }
 
         [Required(ErrorMessage = "Se debe especificar un nombre.")]
-        [Key, Column(Order = 1)] // Segunda columna en la clave primaria compuesta)]
         public string Nombre { get; set; }
+        public string Descripcion { get; set; }
         [NotMapped]
         public abstract bool HasChildren { get; }
 

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Services.Domain
 {
@@ -14,7 +15,7 @@ namespace Services.Domain
         /// Leaf de composite de permisos
         /// </summary>
         /// 
-        public int? Modulo { get; set; } = null;
+        public string Form { get; set; }
 
         public int? TipoPermiso { get; set; }
 

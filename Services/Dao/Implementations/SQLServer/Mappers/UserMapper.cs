@@ -17,12 +17,12 @@ namespace Services.Dao.Implementations.SQLServer.Mappers
         /// </summary>
         /// <param name="values">Arreglo de objetos que contiene los valores de las columnas obtenidos de la base de datos.</param>
         /// <returns>Una instancia de User con los valores mapeados desde la base de datos.</returns>
-        public static User Map(object[] values)
+        public static AppUser Map(object[] values)
         {
-            return new User()
+            return new AppUser()
             {
-                Id = Guid.Parse($"{values[(int)UserColumns.Id]}"),
-                UserName = (string)values[(int)UserColumns.UserName],
+                ID_User = Guid.Parse($"{values[(int)UserColumns.Id]}"),
+                Username = (string)values[(int)UserColumns.UserName],
                 Password = (string)values[(int)UserColumns.Password],
                 Nombre = (string)values[(int)UserColumns.Nombre],
                 Apellido = (string)values[(int)UserColumns.Apellido],

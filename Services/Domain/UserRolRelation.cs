@@ -10,8 +10,8 @@ namespace Services.Domain
     public class UserRolRelation
     {
         [Key]
-        public Guid? IdUser { get; set; }
+        public Guid? ID_User { get; set; }
         [Key]
-        public Guid? IdRol { get; set; }
+        public Guid? ID_Rol { get; set; }
     }
 }

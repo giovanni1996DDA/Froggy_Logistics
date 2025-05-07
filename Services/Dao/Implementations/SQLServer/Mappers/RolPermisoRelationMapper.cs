@@ -21,8 +21,8 @@ namespace Services.Dao.Implementations.SQLServer.Mappers
         {
             return new RolPermisoRelation()
             {
-                IdRol = Guid.Parse($"{values[(int)RolPermisoColumns.IdRol]}"),
-                IdPermiso = Guid.Parse($"{values[(int)RolPermisoColumns.IdPermiso]}"),
+                ID_Rol = Guid.Parse($"{values[(int)RolPermisoColumns.IdRol]}"),
+                ID_Permiso = Guid.Parse($"{values[(int)RolPermisoColumns.IdPermiso]}"),
             };
         }
     }
